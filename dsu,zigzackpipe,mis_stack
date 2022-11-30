@@ -1,0 +1,336 @@
+----------------------------------------------------QUESTION                  1-------------------------------------------------------------------------------------
+There are N computers in a network, all the computers are connected as tree 
+structure. And one new connection is added in the Network. The computers in 
+the network are identified with their IDs, the IDs are numbered between 1 to N.
+
+The connections in the network is given as coonection[i] = [comp-A, comp-B], 
+there is a connection between comp-A and comp-B.
+
+Your task is to remove a connection in the network and print it, so that 
+all the computers are connected as tree structure. If there are multiple 
+options to remove, remove the connection that occurs last in the input.
+
+
+Input Format:
+-------------
+Line-1: Two space separated integers N, number of computers.
+Next N lines: Two space separated integers, comp-A & comp-B.
+
+Output Format:
+--------------
+Print the connection which is removed.
+
+
+Sample Input-1:
+---------------
+6
+1 2
+3 4
+3 6
+4 5
+5 6
+2 3
+
+Sample Output-1:
+---------------
+5 6
+
+
+Sample Input-2:
+---------------
+4
+1 2
+2 3
+3 4
+2 4
+
+Sample Output-2:
+---------------
+2 4
+-------------------------------------------------SOLUTION 1--------------------------------------------------------------------------------------------------------
+import java.util.*;
+class test{
+    
+    static int find(int i){
+        if(par[i]==i){
+            return i;
+        }
+        return par[i]=find(par[i]);
+        
+    }
+    static int par[];
+    
+    public static void main (String[] args) {
+        Scanner o=new Scanner (System.in);
+        
+        int n=o.nextInt();
+        int res[]=new int[2];
+         par=new int[n+1];
+        for(int i=1;i<=n;i++){
+            par[i]=i;
+            
+        }
+        int arr[][]=new int[n][2];
+        for(int i=0;i<n;i++){
+            
+            arr[i][0]=o.nextInt();
+            arr[i][1]=o.nextInt();
+        }
+        for(int i=0;i<n;i++){
+            int e1=arr[i][0];
+            int e2=arr[i][1];
+        //  System.out.println(e1+" "+e2);
+        
+            if(find(e1)==find(e2)){
+               // System.out.println("same");
+                res[0]=e1;
+                res[1]=e2;
+                break;
+                
+            }
+            else{
+               // System.out.println("diff");
+              par[find(e1)]=find(e2);
+              
+            }
+           // System.out.println(Arrays.toString(par));
+        }
+        System.out.println(Arrays.toString(res));
+        
+    }
+}
+------------------------------------------------QUESTION 2------------------------------------------------------------------------------------------------------------
+
+Prabhath is working on words.  He used to take out every letter that was repeated 
+in the word. 
+A word W is given to Prabhath. His objective is to eliminate every duplicate 
+letter from W such that the resultant word R contains every unique letter from W
+and did not contain any duplicate letters. 
+And R should be at the top of the dictionary order.
+
+NOTE:
+-----
+He is not allowed to shuffle the relative order of the letters of the word W to
+form the word R.
+
+Input Format:
+-------------
+A String, the word W.
+
+Output Format:
+--------------
+Print a String, resultant word R.
+
+
+Sample Input-1:
+---------------
+cbadccb
+
+Sample Output-1:
+----------------
+adcb
+
+
+Sample Input-2:
+---------------
+silicosis
+
+Sample Output-2:
+----------------
+ilcos
+----------------------------------------question 2 solution ---------------------------------------------------------------------------------------------------
+tcy
+
+import java.util.*;
+class test{
+    public static void main (String[] args) {
+        Scanner sc=new Scanner(System.in);
+        String s=sc.nextLine();
+        Map<Character,Integer>hm=new HashMap<>();
+        for(int i=0;i<s.length();i++){
+            char ch=s.charAt(i);
+            hm.put(ch,hm.getOrDefault(ch,0)+1);
+        }
+        //cbadccb
+        //adcb
+        int vis[]=new int[26];
+        Stack<Character>st=new Stack<>();
+        for(int i=0;i<s.length();i++){
+            char ch=s.charAt(i);
+            hm.put(ch, hm.get(ch)-1);
+            if(vis[ch-'a']==0){
+            while(!st.isEmpty() && ch<=st.peek() && hm.get(st.peek())>0){ 
+                // hm.put(st.peek(),hm.get(st.peek())-1);
+                vis[st.peek()-'a']=0;
+                st.pop();
+            }
+            
+            st.push(ch);
+            vis[ch-'a']=1;}
+        }
+        String res="";
+        while(!st.isEmpty()){
+            res=st.pop()+res;
+        }
+        System.out.println(res);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+----------------------------------------------------------Question 3--------------------------------------------------------------------------------------------------
+
+A game show hosted by the famous anchor Suma in which the celebrities compete 
+with each other. The game show format is changed a bit, There are N celebrities 
+participated now. And all of them answered correctly for a given question.
+Now everyone got a chance to play the money board game.
+Where i-th player standing at i-th index position of the top, 
+and value of 'i' is 0 <= i < n.
+
+The money board is of size M*N, and N players has coins to drop from
+top of the money board. The money board is opened at top and bottom.
+
+Each cell in the board has a diagonal bar connecting two corners of the cell,
+that can redirect the coin to the rightside or to the leftside.
+
+- The bar that redirects the coin to the right, 
+connected from the top-left corner to the bottom-right corner, indicated by 1.
+- The bar that redirects the coin to the left, 
+connected from the top-right corner to the bottom-left corner, indicated by -1.
+
+The players drop their coins at the top of board. Each coin can get stuck 
+in the board or fall out of the bottom. A coin gets stuck if it hits a "V" 
+shaped pattern between two bars or if a bar redirects the coin into 
+either wall of the board.
+
+Your task is to find and return an array result[] of size N,
+where result[i] is the index that the coin falls out of at the bottom 
+after dropping the coin from the i-th index at the top, 
+or -1 if the coin gets stuck in the board.
+
+Input Format:
+-------------
+Line-1: Two space separated integer M and N, size of the board.
+Next M lines: N space separated integers
+
+Output Format:
+--------------
+Print an array result. 
+
+
+Sample Input-1:
+---------------
+5 5
+1 1 1 -1 -1  
+-1 -1 -1 1 -1
+1 1 1 1 -1
+-1 -1 -1 -1 1
+-1 -1 -1 1 -1
+
+Sample Output-1:
+----------------
+[-1, 0, -1, -1, -1]
+
+
+Sample Input-2:
+---------------
+5 5
+1 1 1 1 1
+-1 -1 -1 -1 -1
+1 1 1 1 1
+-1 -1 -1 -1 -1
+1 1 1 1 1
+
+Sample Output-2:
+----------------
+[1, 2, 3, 4, -1]
+
+
+import java.util.*;
+class test{
+    static int util(int i,int j,int grid[][]){
+       /* if(i<0 || j<0 || i>grid.length || j>grid[0].length){
+            return -1;
+        }
+        if(grid[i][j]==1 && j+1<grid[0].length &&  grid[i][j+1]==-1){
+            return -1;
+        }
+         if(grid[i][j]==1 && j+1>grid[0].length ){
+            util(i+1,j+1,grid);
+            
+         }
+        if(grid[i][j]==1 &&   grid[i][j+1]==1){
+            util(i+1,j+1,grid);
+            
+        }
+       
+        if(grid[i][j]==-1 &&  grid[i][j-1]==1){
+            return -1;
+            
+        }
+        if(grid[i][j]==-1  && j-1>0 && grid[i][j-1]==-1){
+            util(i+1,j-1,grid);
+            
+        }
+        if(i==grid.length){
+            return -1;
+            
+        }
+        return j;*/
+       // System.out.println(i+" "+j);
+        if(i==grid.length){
+            if(j>=0 && j<grid[0].length){
+                return j;
+            }
+            
+        }
+       
+        
+        if(  j<0 || j>=grid[0].length){
+            return -1;
+            
+        }
+        if(grid[i][j]==1 &&  j+1<grid[0].length && grid[i][j+1]==1){
+            return  util(i+1,j+1,grid);
+            
+        }
+        
+        
+        if(grid[i][j]==-1 && j-1>=0 &&  grid[i][j-1]==-1){
+           return  util(i+1,j-1,grid);
+            
+        }
+      
+            return -1;
+      
+        
+        
+        
+    }
+    public static void main (String[] args) {
+        Scanner o=new Scanner(System.in);
+        int r=o.nextInt();
+        int c=o.nextInt();
+        int grid[][]=new int[r][c];
+        for(int i=0;i<r;i++){
+            for(int j=0;j<c;j++){
+                grid[i][j]=o.nextInt();
+                
+            }
+        }
+        
+        for(int i=0;i<c;i++){
+            System.out.print(util(0,i,grid)+" ");
+            
+        }
+    }
+}
