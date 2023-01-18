@@ -1,0 +1,92 @@
+There are some cubes, and each cube has an alphabet (from A to Z) 
+printed on it. You can construct different, non-empty words using these 
+cubes and each of the word length should be 0 < length <= number of cubes.
+
+You are given a string of alphabets S, 
+Your task is to findout number of possible non-empty distinct words
+
+Input Format:
+-------------
+A string S, consist of A-Z letters only.
+
+Output Format:
+--------------
+Print an integer, number of possible non-empty distinct words.
+
+
+Sample Input-1:
+---------------
+EGG
+
+Sample Output-1:
+----------------
+8
+
+Explanation:
+--------------
+The possible distinct words are "E", "G", "EG", "GG", "GE", "EGG", "GEG", "GGE".
+
+
+Sample Input-2:
+---------------
+MADAM
+
+Sample Output-2:
+----------------
+89
+
+import java.util.*;
+class test{
+    static int vis[];
+    static Set<String> st=new HashSet<>();
+    static void util(String s,StringBuilder res,int c){
+      //  System.out.println(res);
+       
+        if(c>=s.length()){
+            return ;
+            
+        }
+         if(st.contains(res)){
+                  return ;
+                  
+                    
+         }
+        for(int i=0;i<s.length();i++){
+            if(vis[i]==0){
+                vis[i]=1;
+                res.append(s.charAt(i));
+                if(!st.contains(res.toString())){
+                    st.add(res.toString());
+                    
+                }
+                util(s,res,c+1);
+                vis[i]=0;
+                res.setLength(res.length()-1);
+                 if(!st.contains(res.toString())){
+                    st.add(res.toString());
+                    
+                 }
+                util(s,res,c+1);
+                
+                
+            }
+        }
+        
+    }
+    public static void main (String[] args) {
+        Scanner o=new Scanner(System.in);
+        String s=o.next();
+        vis=new int[s.length()];
+        for(int i=0;i<s.length();i++){
+            vis[i]=1;
+           StringBuilder sb=new StringBuilder("");
+            sb.append(s.charAt(i));
+          //  System.out.println(s.charAt(i)+" stasat");
+         //   System.out.println(sb+" new ");
+            util(s,sb,1);
+             vis[i]=0;
+            
+        }
+        System.out.println(st.size());
+    }
+}
