@@ -1,0 +1,90 @@
+import java.util.*;
+
+/*
+// Node Structure for reference
+class Node{    
+	int data;    
+	Node next;    
+		
+	public Node(int data) {    
+		this.data = data;    
+		this.next = null;    
+	}    
+}    
+*/
+
+class Solution
+{   
+    Node reverse(Node head){
+              Node pv=null;
+     Node cur=head;
+     Node nxt=head.next;
+     while(cur!=null){
+         cur.next=pv;
+         pv=cur;
+         cur=nxt;
+         if(nxt!=null){
+         nxt=nxt.next;
+         }
+         
+     }
+     return pv;
+     
+    
+   
+     
+    }
+    Node getmid(Node head){
+        Node fptr=head;
+        Node sptr=head;
+        while(fptr!=null && fptr.next!=null){
+          
+            fptr=fptr.next.next;
+           
+            sptr=sptr.next;
+            
+        }
+        return sptr;
+        
+        
+        
+    }
+    boolean isPalindrome(Node head) 
+    {   //time O[N] SPACE O[1]
+        //GETMID FOR GETTING MID
+        //REVERSE TO REVERSE SECOUND HALF OF LIST
+        
+        Node mid=getmid(head);
+        Node head2=reverse(mid);
+        Node t1=head;
+        Node t2=head2;
+        
+        Node t3=head;
+        while(t3.next!=mid){
+            t3=t3.next;
+            
+        }
+        t3.next=null;
+        
+      /*  while(t2!=null){
+            System.out.println(t2.data);
+            t2=t2.next;
+            
+        }*/
+        
+        
+        while(t1!=null){
+            if(t1.data!=t2.data){
+                return false;
+            }
+            t1=t1.next;
+            t2=t2.next;
+            
+        }
+        
+        
+        return true;
+        
+      
+    }
+}
