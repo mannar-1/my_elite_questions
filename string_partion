@@ -1,0 +1,72 @@
+/*
+You are given a string s. We want to partition the string into 
+as many parts as possible so that each letter appears in at most 
+one part.
+
+Note that the partition is done so that after concatenating 
+all the parts in order, the resultant string should be s.
+
+Return a list of integers representing the size of these parts.
+
+ 
+
+Example 1:
+Input: ababcbacadefegdehijhklij
+Output: [9, 7, 8]
+
+Explanation:
+The partition is "ababcbaca", "defegde", "hijhklij".
+This is a partition so that each letter appears in at most one part.
+A partition like "ababcbacadefegde", "hijhklij" is incorrect, because it splits s into less parts.
+
+Example 2:
+Input: eccbbbbdec
+Output: [10]
+
+Example 3:
+Input: abacadcklmklmxyyzx
+Output: [7, 6, 5]
+
+
+*/
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+import java.util.*;
+class test{
+    public static void main (String[] args) {
+        Scanner o=new Scanner(System.in);
+        String s=o.next();
+        
+        Map<Character,Integer> m=new HashMap<>();
+        for(int i=0;i<s.length();i++){
+            if(!m.containsKey(s.charAt(i))){
+                m.put(s.charAt(i),s.lastIndexOf(s.charAt(i)));
+            }
+            
+        }
+        int i=0;
+        int size=0;
+        int max=0;
+        
+        List<Integer> l=new ArrayList<>();
+        //System.out.println(m);
+        while(i<s.length()){
+               max=Math.max(max,m.get(s.charAt(i)));
+              // System.out.println(m.get(s.charAt(i)));
+                if(i==max){
+                    System.out.println("ent "+i);
+                    l.add(size+1);
+                    size=0;
+                    
+                }
+                else{
+                    size++;
+                }
+                i++;
+                
+        }
+        System.out.println(l);
+            
+    }
+}
