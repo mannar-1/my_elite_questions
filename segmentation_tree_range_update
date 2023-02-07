@@ -1,0 +1,143 @@
+import java.util.*;
+
+public class Solution {
+// Segment Tree Node structure
+
+  static int res=0;
+  
+    class SegmentTreeNode {
+        int start, end;
+        SegmentTreeNode left, right;
+        int sum;
+
+        public SegmentTreeNode(int start, int end) {
+            this.start = start;
+            this.end = end;
+            this.left = null;
+            this.right = null;
+            this.sum = 0;
+        }
+    }
+      
+    SegmentTreeNode root = null;
+   
+    public Solution(int[] nums) {
+        root = buildTree(nums, 0, nums.length-1);
+        
+        
+     
+    }
+    
+    
+     void print(SegmentTreeNode r){
+         if(r==null){
+             return ;
+         }
+         System.out.println(r.sum);
+         print(r.left);
+         print(r.right);
+         
+     }
+     
+    private SegmentTreeNode buildTree(int[] arr, int start, int end) {
+        //build the segment Tree
+        //base
+        if(start>end){
+            return null;
+            
+        }
+        SegmentTreeNode t=new SegmentTreeNode(start,end);
+        if(start==end){
+         
+           t.sum=arr[start];
+           
+           return t; 
+        }
+        int mid=(start+end)/2;
+        
+       t.left=buildTree(arr,start,mid);
+       t.right=buildTree(arr,mid+1,end);
+       
+        t.sum=t.left.sum+t.right.sum;
+        return t;
+    }
+   
+    void update(int ind, int val) {
+        
+        update_ele(root,ind,val);
+        
+        
+    }
+    void update_ele(SegmentTreeNode r,int i,int v){
+        //base
+       // System.out.println(r.sum+" "+r.start+" "+r.end+" "+i);
+        if(r==null){
+            return ;
+        }
+        
+        if(r.start==r.end){
+            if(r.start==i){
+               
+                r.sum=v;
+                
+            }
+            return ;
+            
+        }
+        else{
+         int mid=(r.start+r.end)/2;
+           if(i<=mid){
+              update_ele(r.left,i,v);
+             }
+        else{
+             update_ele(r.right,i,v);
+            
+        }
+        r.sum=r.left.sum+r.right.sum;
+       // System.out.println("updated sum "+r.sum);
+        return ;
+        }
+        
+        
+    }
+    public int sumRange(int i, int j) {
+        //implement sumRange method
+        
+        
+       return  utilsum(root,i,j);
+       
+        
+        
+    }
+    int  utilsum(SegmentTreeNode r,int i,int j){
+         if(r==null){
+             //System.out.println("0");
+             return 0;
+             
+         }
+        if(r.end<i || j<r.start){
+            //System.out.println("out of boundry "+r.sum);
+            return 0;
+        }
+       
+        if(r.start==i && r.end==j){
+            //System.out.println(r.sum+" "+r.start+" "+r.end);
+            return r.sum;
+        }
+       
+        if(r.start>=i && r.end<=j){ //full inclusion
+              //System.out.println(r.sum+" "+r.start+" "+r.end);
+            return r.sum;
+            
+        }
+        else{
+            //partion inclusion
+           // System.out.println("ent else "+r.start+" "+r.end);
+            //int mid=(s+e)/2;
+            return utilsum(r.left,i,j)+utilsum(r.right,i,j);
+            
+        }
+        
+    }
+    
+}
