@@ -141,3 +141,102 @@ public class Solution {
     }
     
 }
+----------------------------------------edited version 2-----------------------------------------------------------------------------------------------------------
+import java.util.*;
+
+public class Main
+{
+    
+    static class Node{
+        int sum;
+        int start;
+        int end;
+        Node left;
+        Node right;
+        Node(int s,int e){
+            start=s;
+            end=e;
+            left=null;
+            right=null;
+        }
+        
+        
+    }
+   static  Node root;
+	public static void main(String[] args) {
+            Scanner o=new Scanner(System.in);
+            int n=o.nextInt();
+            int arr[]=new int[n];
+            for(int i=0;i<n;i++){
+                arr[i]=o.nextInt();
+                
+            }
+                root=build(arr,0,arr.length-1);
+                Node t=root;
+              // print(t);
+              t=root;
+              System.out.println(rangesum(t,0,2));  //root,start,end of range
+             t=root;
+              update(t,1,9);
+               System.out.println(rangesum(t,0,1)); 
+            
+	}
+	static Node build(int arr[],int s,int e){
+	    Node t=new Node(s,e);
+	    if(s==e){
+	        t.sum=arr[s];
+	        return t;
+	    }
+	    int mid=(s+e)/2;
+	    t.left=build(arr,s,mid);
+	    t.right=build(arr,mid+1,e);
+	    t.sum=t.left.sum+t.right.sum;
+	    return t;
+	    
+	}
+	static void print(Node r){
+	    if(r==null){
+	        return ;
+	    }
+	    System.out.println(r.sum);
+	    print(r.left);
+	    print(r.right);
+	    
+	}
+	static int rangesum(Node r,int i,int j){
+	    if(r.end<i || j<r.start){
+	        return 0;
+	    }
+	    if(r.start==i && r.end==j){
+	        return r.sum;
+	        
+	    }
+	    if(r.start>=i && r.end<=j){
+	        return r.sum;
+	    }
+	    else{
+	       return rangesum(r.left,i,j)+rangesum(r.right,i,j);
+	       
+	    }
+	}
+	static void update(Node r,int idx,int val){
+	    if(r.start==r.end){
+	        r.sum=val;
+	        
+	    }
+	    else{
+	        int mid=(r.start+r.end)/2;
+	        if(idx<=mid){
+	            update(r.left,idx,val);
+	            
+	        }
+	        else{
+	            update(r.right,idx,val);
+	            
+	        }
+	        r.sum=r.left.sum+r.right.sum;
+	        
+	    }
+	}
+}
+
